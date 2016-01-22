@@ -4,7 +4,7 @@ import wx
 class Example(wx.Frame):
     def __init__(self,title):
         super(Example,self).__init__(None,title=title,size=(250,100))
-        self.Bind(wx.EVT_PAINT,self.OnPaint)
+        self.Bind(wx.EVT_PAINT,self.OnPaint)# 绑定函数
         self.Centre()
         self.Show()
     def OnPaint(self,e):
