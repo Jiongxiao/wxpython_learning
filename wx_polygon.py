@@ -82,7 +82,7 @@ class Example(wx.Frame):
         self.Show()
 
     def OnPaint(self,e):
-        dc=wx.PaintDC(self)  #PanntDC 是个啥
+        dc=wx.ClientDC(self)  #PanntDC 是个啥
         for shape in self.shapes:
             dc.SetPen(wx.Pen(shape.color))
             dc.DrawLines(shape.drawPoints())
