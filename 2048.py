@@ -127,11 +127,65 @@ class Frame(wx.Frame):
                     self.doMove(*self.slideLeftRight(False))
 
             def slideLeftRight(self, up):
-                pass
+                score=0
+                numCols=len(self.data[0])
+                numRows=len(self.data)
+                oldData=copy.deepcopy(self.data)
+
+                for row in range(numRows):
+                    rvl= [self.data[row][col] for col in range(numCols) if self.data[row][col]!=0]
+                    if len(rvl)>=2:
+                        score=score+self.update(rvl,left)
+                    for i in range(numCols-len(rvl)):
+                        if left:
+                            rvl.append(0)
+                        else:
+                            rvl.insert(0,0)
+                    for col in range(numCols):
+                        data[row][col]=rvl[col]
+                return oldData!=self.data, score
+
 
             def slideUpDown(self, up):
-                pass
+                score=0
+                numCols=len(self.data[0])
+                numRows=len(self.data)
+                oldData=copy.deepcopy(self.data)
+
+                for col in range(numCols):
+                    cvl=[self.data[row][col] for row in range(numRows) if self.data[row][col]!=0]
+                    if len(cvl)>=2:
+                        score=score+self.update(cvl,up)
+                    for i in range(numRows-len(cvl)):
+                        if up: cvl.append(0)
+                        else: cvl.insert(0,0)
+                    for row in range(numRows):
+                        self.data[row][col]=cvl[row]
+                return oldData!=self.data, score
+
+            def update(self, vlist, direct): #up or left
+                score=0
+                if direct:
+                    i=1
+                    while i<len(vlist):
+                        if vlist[i-1]==vlist[i]:
+                            del vlist[i]
+                            vlist[i-1]=2*vlist[i-1]
+                            score=vlist[i-1]
+                            i+=1
+                        i+=1
+                else:
+                    i=len(vlist)-1
+                    while i>0:
+                        if vlist[i-1]==vlist[i]:
+                            del vlist[i]
+                            vlist[i-1]*=2
+                            score+=vlist[i-1]
+                            i-=1
+                        i-=1
+                return score
+
+
 
             def doMove(self, move, score):
                 if move:
-                    
