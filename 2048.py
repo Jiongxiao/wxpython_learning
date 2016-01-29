@@ -115,9 +115,7 @@ class Frame(wx.Frame):
             print type(self.curScore),type(self.bstScore)
             if self.curScore > self.bstScore:
                 self.bstScore = self.curScore
-                print 'wocaonima'
             self.drawScore(dc)
-            print self.curScore,self.bstScore
         self.drawTiles(dc)
 
     def onKeyDown(self,event):
@@ -197,7 +195,7 @@ class Frame(wx.Frame):
                 if self.data[row][col]==0: available.append((row,col))
         if available:
             row,col=available[random.randint(0,len(available)-1)]
-            self.data[row][col]=2
+            self.data[row][col]=2      #############easy mode
             return True
         return False
 
@@ -287,4 +285,4 @@ if __name__ == "__main__":
     app = wx.App()
     Frame(u"2048 v1.0.1 by Jiongxiao")
     app.MainLoop()
-#no work well yet
+#easy mode
