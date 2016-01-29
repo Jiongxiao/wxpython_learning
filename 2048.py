@@ -38,10 +38,11 @@ class Frame(wx.Frame):
                 36028797018963968:(237, 207, 114),72057594037927936:(237, 207, 114)}
         self.setIcon()
         self.initGame()
-        self.initBuffer()
+
         panel= wx.Panel(self)
         panel.Bind(wx.EVT_KEY_DOWN, self.onKeyDown)
         panel.SetFocus()
+        self.initBuffer()
 
         self.Bind(wx.EVT_SIZE, self.onSize)
         self.Bind(wx.EVT_PAINT, self.onPaint)
@@ -64,7 +65,7 @@ class Frame(wx.Frame):
     def loadScore(self):
         if os.path.exists('bestscore.ini'):
             ff=open('bestscore.ini')
-            self.bstScore=ff.read()
+            self.bstScore=int(ff.read())
             ff.close()
     def saveScore(self):
         ff=open('bestscore.ini','w')
@@ -109,9 +110,14 @@ class Frame(wx.Frame):
         dc=wx.BufferedDC(wx.ClientDC(self),self.buffer)
         if score:
             self.curScore+=score
-            if self.curScore> self.bstScore:
-                self.bstScore=self.curScore
+            # if self.curScore > self.bstScore:
+            #     self.bstScore=self.curScore
+            print type(self.curScore),type(self.bstScore)
+            if self.curScore > self.bstScore:
+                self.bstScore = self.curScore
+                print 'wocaonima'
             self.drawScore(dc)
+            print self.curScore,self.bstScore
         self.drawTiles(dc)
 
     def onKeyDown(self,event):
@@ -170,7 +176,7 @@ class Frame(wx.Frame):
                 if vlist[i-1]==vlist[i]:
                     del vlist[i]
                     vlist[i-1]=2*vlist[i-1]
-                    score=vlist[i-1]
+                    score+=vlist[i-1]
                     i+=1
                 i+=1
         else:
@@ -188,14 +194,12 @@ class Frame(wx.Frame):
         available=[]
         for row in range(len(self.data)):
             for col in range(len(self.data[0])):
-                if self.data[row][col]!=0: available.append((row,col))
+                if self.data[row][col]==0: available.append((row,col))
         if available:
             row,col=available[random.randint(0,len(available)-1)]
             self.data[row][col]=2
             return True
         return False
-
-
 
     def doMove(self, move, score):
         if move:
@@ -204,7 +208,7 @@ class Frame(wx.Frame):
             if self.isGameOver():
                 if wx.MessageBox(u'游戏结束，是否再来？', u'哈哈',wx.YES_NO|wx.ICON_INFORMATION)==wx.YES:
                     bstScore=self.bstScore
-                    self.initGame
+                    self.initGame()
                     self.bstScore=bstScore
                     self.drawAll()
 
